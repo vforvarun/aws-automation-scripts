@@ -23,8 +23,10 @@ This shell script automates the process of approving pull requests in AWS CodeCo
    ```bash
    chmod +x approve_pr.sh
    ./approve_pr.sh my_csv_file.csv
+5. **Sit Back and Relax**: The script will automatically check and approve pull requests as needed.
 
 #### Note
+- Ensure that you have reviewed the code before approving the Pull Request. 
 - Make sure to review the script and customize it according to your specific requirements before using it in a production environment.
 - This script assumes you have the necessary permissions to approve pull requests in the specified repositories.
 - Feel free to contribute, report issues, or suggest improvements by opening an issue or pull request!
