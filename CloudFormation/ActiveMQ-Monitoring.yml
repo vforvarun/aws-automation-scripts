@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template for setting up CloudWatch monitoring and alerts for Amazon MQ
+
+Parameters:
+  AmazonMQBrokerName:
+    Type: String
+    Description: Name of the Amazon MQ broker to monitor
+
+Resources:
+  CloudWatchAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQHighCpuAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: CpuUtilization
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: 1
+      Threshold: 80
+      AlarmActions:
+        - !Ref SnsTopic
+
+  SnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: AmazonMQAlertsTopic
+
+  ReadOnlyPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: AmazonMQReadOnlyPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - mq:DescribeBroker
+              - mq:ListBrokers
+              - mq:DescribeBrokerInstanceOptions
+              - mq:DescribeConfiguration
+              - mq:DescribeConfigurationRevision
+              - mq:DescribeUser
+              - mq:ListConfigurationRevisions
+              - mq:ListConfigurations
+              - mq:ListUsers
+              - mq:ListTags
+              - mq:ListTagsForResource
+              - mq:DescribeTags
+              - mq:DescribeTagsForResource
+              - mq:ListEndpoints
+              - mq:DescribeBrokerEngineTypes
+              - mq:DescribeBrokerInstance
+              - mq:DescribeBrokerEngineVersions
+              - mq:DescribeBrokerInstanceOptions
+              - mq:DescribeUser
+              - mq:DescribeConfiguration
+              - mq:DescribeBrokerConfiguration
+            Resource: "*"
+            Condition:
+              StringEquals:
+                mq:ResourceTag/Environment: "production"
