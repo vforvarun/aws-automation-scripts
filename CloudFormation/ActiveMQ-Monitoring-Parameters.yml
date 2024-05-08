@@ -1,4 +1,4 @@
-template-file-path: ./ActiveMQ-Monitoring.yml
+template-file-path: ./CloudFormation/ActiveMQ-Monitoring.yml
 
 parameters: 
     AmazonMQBrokerName: TestBroker
