@@ -1,0 +1,7 @@
+template-file-path: ./ActiveMQ-Monitoring.yml
+
+parameters: 
+    AmazonMQBrokerName: TestBroker
+tags:
+    cost-center: '123456'
+    org: 'AWS'
