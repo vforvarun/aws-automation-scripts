@@ -7,18 +7,153 @@ Parameters:
     Description: Name of the Amazon MQ broker to monitor
 
 Resources:
-  CloudWatchAlarm:
+  CpuUtilizationAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmName: AmazonMQHighCpuAlarm
       Namespace: AWS/AmazonMQ
-      MetricName: CpuUtilization
+      MetricName: ActiveMQMemoryUsage
       Dimensions:
         - Name: Broker
           Value: !Ref AmazonMQBrokerName
       ComparisonOperator: GreaterThanThreshold
-      EvaluationPeriods: 1
+      EvaluationPeriods: '1'
       Threshold: 80
+      AlarmActions:
+        - !Ref SnsTopic
+
+  MemoryUtilizationAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQHighMemoryAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQMemoryUsage
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 80
+      AlarmActions:
+        - !Ref SnsTopic
+
+  MessageCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQHighMessageCountAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQQueueSize
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 1000
+      AlarmActions:
+        - !Ref SnsTopic
+
+  ExpiredMessageCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQExpiredMessageCountAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQExpiredMessageCount
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 10
+      AlarmActions:
+        - !Ref SnsTopic
+
+  DlqSizeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQDlqSizeAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQDlqSize
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 100
+      AlarmActions:
+        - !Ref SnsTopic
+
+  ConnectionsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQConnectionsAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQConnections
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 5
+      AlarmActions:
+        - !Ref SnsTopic
+
+  EnqueueCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQEnqueueCountAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQEnqueueCount
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 1000
+      AlarmActions:
+        - !Ref SnsTopic
+
+  DequeueCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQDequeueCountAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQDequeueCount
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 1000
+      AlarmActions:
+        - !Ref SnsTopic
+
+  AverageMessageSizeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQAverageMessageSizeAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQAverageMessageSize
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 1024
+      AlarmActions:
+        - !Ref SnsTopic
+
+  PendingMessageCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: AmazonMQPendingMessageCountAlarm
+      Namespace: AWS/AmazonMQ
+      MetricName: ActiveMQPendingMessageCount
+      Dimensions:
+        - Name: Broker
+          Value: !Ref AmazonMQBrokerName
+      ComparisonOperator: GreaterThanThreshold
+      EvaluationPeriods: '1'
+      Threshold: 1000
       AlarmActions:
         - !Ref SnsTopic
 
